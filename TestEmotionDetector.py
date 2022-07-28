@@ -2,6 +2,10 @@ import cv2
 import numpy as np
 from keras.models import model_from_json
 
+import os
+
+os.environ['KMP_DUPLICATE_LIB_OK']='True'
+
 emotion_dict = {0: "Angry", 1: "Disgusted", 2: "Fearful", 3: "Happy", 4: "Neutral", 5: "Sad", 6: "Surprised"}
 
 # load json and create model
@@ -37,7 +41,7 @@ while True:
     for (x, y, w, h) in num_faces:
         cv2.rectangle(frame, (x, y-50), (x+w, y+h+10), (0, 255, 0), 4)
         roi_gray_frame = gray_frame[y:y + h, x:x + w]
-        cropped_img = np.expand_dims(np.expand_dims(cv2.resize(roi_gray_frame, (48, 48)) -1), 0, axis = none)
+        cropped_img = np.expand_dims(np.expand_dims(cv2.resize(roi_gray_frame, (48, 48)), -1), 0)
 
         #predict the emotions
         emotion_prediction = emotion_model.predict(cropped_img)
